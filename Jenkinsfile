@@ -24,10 +24,12 @@ pipeline {
             }
         }
 
-        stage("build image") {
+        stage("build and push image") {
             steps {
                 script {
                    buildImage 'priyajanasia/my-java-maven:jma-3.0'
+                   dockerLogin()
+                   dockerPush 'priyajanasia/my-java-maven:jma-3.0'
                 }
             }
         }
