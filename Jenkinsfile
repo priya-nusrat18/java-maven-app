@@ -2,44 +2,30 @@
 
 @Library('jenkins-shared-library@jenkins-SL-new') _
 
-pipeline {   
+pipeline {
     agent any
+
     tools {
         maven 'my-maven'
     }
+
     stages {
-        stage("init") {
+        stage('Build Jar') {
             steps {
                 script {
-                    gv = load "script.groovy"
-                }
-            }
-        }
-        stage("build jar") {
-            steps {
-                script {
-                 buildJar()
-
+                    buildJar()
                 }
             }
         }
 
-        stage("build and push image") {
+        stage('Build and Push Image') {
             steps {
                 script {
-                   buildImage 'priyajanasia/my-java-maven:jma-3.0'
-                   dockerLogin()
-                   dockerPush 'priyajanasia/my-java-maven:jma-3.0'
+                    buildImage('priyajanasia/my-java-maven:jma-3.0')
+                    dockerLogin()
+                    dockerPush('priyajanasia/my-java-maven:jma-3.0')
                 }
             }
         }
-
-        stage("deploy") {
-            steps {
-                script {
-                    gv.deployApp()
-                }
-            }
-        }               
     }
-} 
+}
